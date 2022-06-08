@@ -66,7 +66,6 @@ def get_car_categories():
         sys.stdout.write('img_path : ' + img_path)
         image = load_img('data/data1a/training/01-whole/' + img_path, target_size=(224, 224))
         img = prepare_image(image, target=(224, 224))
-        model = VGG16(input_shape=(224, 224,3), weights="imagenet")
         out = model.predict(img)
         preds = get_predictions(out,top=5)
         for pred in preds[0]:
