@@ -76,7 +76,8 @@ def detectCarImage(args):
     base64_img_bytes = imageBase64Encoded.encode('utf-8')
     image = base64.decodebytes(base64_img_bytes)
   
-    categ_count = load('car_model_cat_list.pk')
+    with open('car_model_cat_list.pk', 'rb') as f:
+        categ_count = pk.load(f)
 
     categ_list = [k for k, v in categ_count.most_common()[:25]]
 
