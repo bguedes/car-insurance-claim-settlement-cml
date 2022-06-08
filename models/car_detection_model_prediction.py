@@ -74,4 +74,4 @@ def pred_arr_delay(args):
 
     categ_list = [k for k, v in categ_count.most_common()[:25]]
 
-    return predict('00021.jpg', categ_list)
+    return predict('data/00021.jpg', categ_list)
