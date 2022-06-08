@@ -1,3 +1,4 @@
+import base64
 import csv
 import io
 import json
@@ -12,6 +13,7 @@ import efficientnet.keras as efn
 import keras
 import numpy as np
 import requests
+from joblib import load
 from keras.applications import ResNet50, imagenet_utils
 from keras.applications.vgg16 import VGG16
 from keras.utils.data_utils import get_file
@@ -19,7 +21,6 @@ from PIL import Image
 #from keras.preprocessing.image import load_img
 #from keras.preprocessing.image import img_to_array
 from tensorflow.keras.utils import img_to_array, load_img
-from joblib import load
 
 CLASS_INDEX = None
 
@@ -69,9 +70,14 @@ def get_predictions(preds, top=5):
         results.append(result)
     return results
 
-def pred_arr_delay(args):
+def detectCarImage(args):
+  
+    imageBase64Encoded = args["imageBase64"]
+    base64_img_bytes = imageBase64Encoded.encode('utf-8')
+    image = base64.decodebytes(base64_img_bytes)
+  
     categ_count = load('car_model_cat_list.pk')
 
     categ_list = [k for k, v in categ_count.most_common()[:25]]
 
-    return predict('data/00021.jpg', categ_list)
+    return predict(image, categ_list)
