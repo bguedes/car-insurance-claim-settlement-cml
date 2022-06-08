@@ -19,6 +19,7 @@ from PIL import Image
 #from keras.preprocessing.image import load_img
 #from keras.preprocessing.image import img_to_array
 from tensorflow.keras.utils import img_to_array, load_img
+from joblib import load
 
 CLASS_INDEX = None
 
@@ -40,16 +41,16 @@ def predict(img_path, categ_list):
     image = load_img(img_path, target_size=(224, 224))
     #urllib.request.urlretrieve(img_path, 'image.jpg')
     img = prepare_image(image, target=(224, 224))
+    model = VGG16(input_shape=(224, 224,3), weights="imagenet")
     out = model.predict(img)
     preds = get_predictions(out, top=5)
-    print("Ensuring entered picture is a car...")
     for pred in preds[0]:
         if pred[0:2] in categ_list:
             print(pred[0:2])
             print("Successful. Proceeding to damage assessment...")
-            return "Successful. Proceeding to damage assessment..."
+            return {"car_detected": "yes"}
     print("The entered image is a not a car. Please try again. Consider a different angle or lighting.")
-    return "The entered image is a not a car. Please try again. Consider a different angle or lighting."
+    return {"car_detected": "no"}
 
 def get_predictions(preds, top=5):
     global CLASS_INDEX
@@ -68,9 +69,9 @@ def get_predictions(preds, top=5):
         results.append(result)
     return results
 
-with open('model_cat_list.pk', 'rb') as f:
-    categ_count = pk.load(f)
+def pred_arr_delay(args):
+    categ_count = load('car_model_cat_list.pk')
 
-categ_list = [k for k, v in categ_count.most_common()[:25]]
+    categ_list = [k for k, v in categ_count.most_common()[:25]]
 
-predict('00021.jpg', categ_list)
+    return predict('00021.jpg', categ_list)
