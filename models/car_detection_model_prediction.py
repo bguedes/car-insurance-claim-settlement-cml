@@ -29,20 +29,6 @@ def prepare_image(image, target):
     # return the processed image
     return image
 
-def predict(img_path, categ_list):
-    image = load_img(img_path, target_size=(224, 224))
-    img = prepare_image(image, target=(224, 224))
-    model = VGG16(input_shape=(224, 224,3), weights="imagenet")
-    out = model.predict(img)
-    preds = get_predictions(out, top=5)
-    for pred in preds[0]:
-        if pred[0:2] in categ_list:
-            print(pred[0:2])
-            print("Successful. Proceeding to damage assessment...")
-            return {"car_detected": "true"}
-    print("The entered image is a not a car. Please try again. Consider a different angle or lighting.")
-    return {"car_detected": "false"}
-
 def get_predictions(preds, top=5):
     global CLASS_INDEX
     if len(preds.shape) != 2 or preds.shape[1] != 1000:
@@ -60,15 +46,23 @@ def get_predictions(preds, top=5):
         results.append(result)
     return results
 
+def predict(base64ImageEncoded, categ_list):
+    img = base64.decodebytes(base64ImageEncoded.encode())    
+    img = prepare_image(image, target=(224, 224))
+    model = VGG16(input_shape=(224, 224,3), weights="imagenet")
+    out = model.predict(img)
+    preds = get_predictions(out, top=5)
+    for pred in preds[0]:
+        if pred[0:2] in categ_list:
+            print(pred[0:2])
+            print("Successful. Proceeding to damage assessment...")
+            return {"car_detected": "true"}
+    print("The entered image is a not a car. Please try again. Consider a different angle or lighting.")
+    return {"car_detected": "false"}
+
 def detectCarImage(args):
-  
-    imageBase64Encoded = args["imageBase64"]
-    base64_img_bytes = imageBase64Encoded.encode('utf-8')
-    image = base64.decodebytes(base64_img_bytes)
-  
+    imageBase64Encoded = args["imageBase64"] 
     with open('car_model_cat_list.pk', 'rb') as f:
         categ_count = pk.load(f)
-
     categ_list = [k for k, v in categ_count.most_common()[:25]]
-
-    return predict(image, categ_list)
+    return predict(imageBase64Encoded, categ_list)
