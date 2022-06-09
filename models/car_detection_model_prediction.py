@@ -18,13 +18,11 @@ def prepare_image(image, target):
     # if the image mode is not RGB, convert it
     if image.mode != "RGB":
         image = image.convert("RGB")
-
     # resize the input image and preprocess it
     image = image.resize(target)
     image = img_to_array(image)
     image = np.expand_dims(image, axis=0)
     image = imagenet_utils.preprocess_input(image)
-
     # return the processed image
     return image
 
@@ -58,7 +56,7 @@ def predict(base64ImageEncoded, categ_list):
 
 def detectCarImage(args):
     imageBase64Encoded = args["imageBase64"] 
-    with open('/home/car_damage_ml_images/models/old/car_model_cat_list.pk', 'rb') as f:
+    with open('/models/car_model_cat_list.pk', 'rb') as f:
         categ_count = pk.load(f)
     categ_list = [k for k, v in categ_count.most_common()[:25]]
     return predict(imageBase64Encoded, categ_list)
