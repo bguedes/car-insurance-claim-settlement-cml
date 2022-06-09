@@ -56,7 +56,7 @@ def predict(base64ImageEncoded, categ_list):
 
 def detectCarImage(args):
     imageBase64Encoded = args["imageBase64"] 
-    with open('/models/car_model_cat_list.pk', 'rb') as f:
+    with open('/home/cdsw/models/car_model_cat_list.pk', 'rb') as f:
         categ_count = pk.load(f)
     categ_list = [k for k, v in categ_count.most_common()[:25]]
     return predict(imageBase64Encoded, categ_list)
