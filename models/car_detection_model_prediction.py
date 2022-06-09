@@ -1,13 +1,6 @@
 import base64
-import csv
-import io
 import json
-import os
 import pickle as pk
-import sys
-import urllib.request
-from collections import Counter, defaultdict
-from io import BytesIO
 
 import efficientnet.keras as efn
 import keras
@@ -18,8 +11,6 @@ from keras.applications import ResNet50, imagenet_utils
 from keras.applications.vgg16 import VGG16
 from keras.utils.data_utils import get_file
 from PIL import Image
-#from keras.preprocessing.image import load_img
-#from keras.preprocessing.image import img_to_array
 from tensorflow.keras.utils import img_to_array, load_img
 
 CLASS_INDEX = None
@@ -40,7 +31,6 @@ def prepare_image(image, target):
 
 def predict(img_path, categ_list):
     image = load_img(img_path, target_size=(224, 224))
-    #urllib.request.urlretrieve(img_path, 'image.jpg')
     img = prepare_image(image, target=(224, 224))
     model = VGG16(input_shape=(224, 224,3), weights="imagenet")
     out = model.predict(img)
@@ -49,9 +39,9 @@ def predict(img_path, categ_list):
         if pred[0:2] in categ_list:
             print(pred[0:2])
             print("Successful. Proceeding to damage assessment...")
-            return {"car_detected": "yes"}
+            return {"car_detected": "true"}
     print("The entered image is a not a car. Please try again. Consider a different angle or lighting.")
-    return {"car_detected": "no"}
+    return {"car_detected": "false"}
 
 def get_predictions(preds, top=5):
     global CLASS_INDEX
