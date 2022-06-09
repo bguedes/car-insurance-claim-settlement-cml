@@ -43,7 +43,7 @@ def get_predictions(preds, top=5):
         results.append(result)
     return results
 
-def predict(base64ImageEncoded, categ_list):
+def predict(imageBase64Encoded, categ_list):
     image = Image.open(io.BytesIO(base64.decodebytes(imageBase64Encoded.encode())))   
     img = prepare_image(image, target=(224, 224))
     model = VGG16(input_shape=(224, 224,3), weights="imagenet")
