@@ -10,7 +10,6 @@ from tensorflow.keras.applications import VGG16
 from tensorflow import keras
 
 def load_and_prep_image(base64ImageEncoded, img_shape=224):
-  print(base64ImageEncoded)
   img = base64.decodebytes(base64ImageEncoded.encode())
   img = tf.image.decode_image(img, channels=3)
   img = tf.image.resize(img, size = [img_shape, img_shape])
