@@ -54,15 +54,12 @@ def predict(base64ImageEncoded, categ_list):
     preds = get_predictions(out, top=5)
     for pred in preds[0]:
         if pred[0:2] in categ_list:
-            print(pred[0:2])
-            print("Successful. Proceeding to damage assessment...")
             return {"car_detected": "true"}
-    print("The entered image is a not a car. Please try again. Consider a different angle or lighting.")
     return {"car_detected": "false"}
 
 def detectCarImage(args):
     imageBase64Encoded = args["imageBase64"] 
-    with open('car_model_cat_list.pk', 'rb') as f:
+    with open('/home/car_damage_ml_images/models/old/car_model_cat_list.pk', 'rb') as f:
         categ_count = pk.load(f)
     categ_list = [k for k, v in categ_count.most_common()[:25]]
     return predict(imageBase64Encoded, categ_list)
