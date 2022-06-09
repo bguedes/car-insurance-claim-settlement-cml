@@ -2,7 +2,6 @@ import base64
 import json
 import pickle as pk
 
-import efficientnet.keras as efn
 import keras
 import numpy as np
 import requests
