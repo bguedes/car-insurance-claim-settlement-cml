@@ -39,9 +39,9 @@ def predict(img_path, categ_list):
         if pred[0:2] in categ_list:
             print(pred[0:2])
             print("Successful. Proceeding to damage assessment...")
-            return {"car_detected": "yes"}
+            return {"car_detected": "true"}
     print("The entered image is a not a car. Please try again. Consider a different angle or lighting.")
-    return {"car_detected": "no"}
+    return {"car_detected": "false"}
 
 def get_predictions(preds, top=5):
     global CLASS_INDEX
