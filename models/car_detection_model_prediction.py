@@ -47,7 +47,7 @@ def get_predictions(preds, top=5):
     return results
 
 def predict(base64ImageEncoded, categ_list):
-    img = base64.decodebytes(base64ImageEncoded.encode())    
+    image = base64.decodebytes(base64ImageEncoded.encode())    
     img = prepare_image(image, target=(224, 224))
     model = VGG16(input_shape=(224, 224,3), weights="imagenet")
     out = model.predict(img)
