@@ -160,7 +160,7 @@ def finetune_binary_model():
 train_datagen = ImageDataGenerator(rescale=1/255.)
 validation_datagen = ImageDataGenerator(rescale=1/255.)
 
-location = './car-damage-dataset/data1a/'
+location = '../data/'
 top_model_weights_path = location+'/top_model_weights.h5'
 fine_tuned_model_path = location+'/carDamagePredictionModel.h5'
 
