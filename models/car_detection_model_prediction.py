@@ -31,11 +31,7 @@ def get_predictions(preds, top=5):
     if len(preds.shape) != 2 or preds.shape[1] != 1000:
         raise ValueError('`decode_predictions` expects a batch of predictions (i.e. a 2D array of shape (samples, 1000)). Found array with shape: ' + str(preds.shape))
     if CLASS_INDEX is None:
-        #fpath = get_file('imagenet_class_index.json',
-        #    'https://s3.amazonaws.com/deep-learning-models/image-models/imagenet_class_index.json',
-        #    cache_subdir='models')
-        #CLASS_INDEX = json.load(open(fpath))
-        CLASS_INDEX = json.load(open('/home/cdsw/models/imagenet_class_index.json'))
+        CLASS_INDEX = json.load(open('models/imagenet_class_index.json'))
     results = []
     for pred in preds:
         top_indices = pred.argsort()[-top:][::-1]
@@ -57,7 +53,7 @@ def predict(imageBase64Encoded, categ_list):
 
 def detectCarImage(args):
     imageBase64Encoded = args["imageBase64"] 
-    with open('/home/cdsw/models/car_model_cat_list.pk', 'rb') as f:
+    with open('models/car_model_cat_list.pk', 'rb') as f:
         categ_count = pk.load(f)
     categ_list = [k for k, v in categ_count.most_common()[:25]]
     return predict(imageBase64Encoded, categ_list)
